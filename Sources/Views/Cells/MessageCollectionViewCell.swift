@@ -51,6 +51,14 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
         return label
     }()
 
+    open var errorImageView: UIImageView = {
+        let theImageView = UIImageView()
+        let assetBundle = Bundle.messageKitAssetBundle()
+        let imageUrl = assetBundle.path(forResource: "error_indicator", ofType: "png", inDirectory: "Images")
+        theImageView.image = UIImage(contentsOfFile: imageUrl!)
+        return theImageView
+    }()
+
     open weak var delegate: MessageCellDelegate?
 
     override public init(frame: CGRect) {
@@ -69,6 +77,7 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
         contentView.addSubview(avatarView)
         contentView.addSubview(cellTopLabel)
         contentView.addSubview(cellBottomLabel)
+        contentView.addSubview(errorImageView)
     }
 
     open override func prepareForReuse() {
@@ -87,6 +96,7 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
             cellTopLabel.frame = attributes.topLabelFrame
             cellBottomLabel.frame = attributes.bottomLabelFrame
             messageContainerView.frame = attributes.messageContainerFrame
+            errorImageView.frame = attributes.errorFrame
         }
     }
 
@@ -110,6 +120,7 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
         let topText = dataSource.cellTopLabelAttributedText(for: message, at: indexPath)
         let bottomText = dataSource.cellBottomLabelAttributedText(for: message, at: indexPath)
 
+        errorImageView.isHidden = !dataSource.cellHasErros(for: message, at: indexPath)
         avatarView.set(avatar: avatar)
         cellTopLabel.attributedText = topText
         cellBottomLabel.attributedText = bottomText

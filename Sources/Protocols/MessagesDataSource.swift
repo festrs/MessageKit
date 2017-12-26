@@ -81,6 +81,15 @@ public protocol MessagesDataSource: AnyObject {
     /// The default value returned by this method is `nil`.
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString?
 
+    /// Indicates if cell has erros of any kind and need to show indicator.
+    ///
+    /// - Parameters:
+    ///   - message: The `MessageType` that will be displayed by this cell.
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///
+    /// The default value returned by this method is `false`.
+    func cellHasErros(for message: MessageType, at indexPath: IndexPath) -> Bool
+
 }
 
 public extension MessagesDataSource {
@@ -99,6 +108,10 @@ public extension MessagesDataSource {
 
     func cellBottomLabelAttributedText(for message: MessageType, at indexPath: IndexPath) -> NSAttributedString? {
         return nil
+    }
+
+    func cellHasErros(for message: MessageType, at indexPath: IndexPath) -> Bool {
+        return false
     }
 
 }

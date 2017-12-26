@@ -36,6 +36,23 @@ final class MessageIntermediateLayoutAttributes {
     var itemHeight: CGFloat = 0
     var cellFrame: CGRect = .zero
 
+    // Error Indicator
+    lazy var errorFrame: CGRect  = {
+        var errorSize: CGSize = CGSize(width: 25, height: 25)
+        var origin = CGPoint.zero
+        origin.y = messageContainerFrame.midY - (errorSize.height/2)
+
+        switch avatarPosition.horizontal {
+        case .cellLeading:
+            origin.x = messageContainerFrame.maxX + 2
+        case .cellTrailing:
+            origin.x = messageContainerFrame.origin.x - errorSize.width + 2
+        case .natural:
+            fatalError("AvatarPosition Horizontal.natural needs to be resolved.")
+        }
+        return CGRect(origin: origin, size: errorSize)
+    }()
+
     // AvatarView
     var avatarPosition = AvatarPosition(horizontal: .cellLeading, vertical: .cellBottom)
     var avatarSize: CGSize = .zero

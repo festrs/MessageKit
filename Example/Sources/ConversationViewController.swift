@@ -290,6 +290,9 @@ extension ConversationViewController: MessagesDataSource {
         return NSAttributedString(string: dateString, attributes: [NSAttributedStringKey.font: UIFont.preferredFont(forTextStyle: .caption2)])
     }
 
+    func cellHasErros(for message: MessageType, at indexPath: IndexPath) -> Bool {
+        return true
+    }
 }
 
 // MARK: - MessagesDisplayDelegate
@@ -388,6 +391,7 @@ extension ConversationViewController: MessagesLayoutDelegate {
         return 200
     }
 
+    
 }
 
 // MARK: - MessageCellDelegate
