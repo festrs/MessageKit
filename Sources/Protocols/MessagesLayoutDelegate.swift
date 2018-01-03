@@ -44,6 +44,27 @@ public protocol MessagesLayoutDelegate: AnyObject {
     ///
     /// All other Senders: `UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)`
     func messagePadding(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIEdgeInsets
+
+    /// Specifies the padding for error view in the `MessageContainerView` in a `MessageCollectionViewCell`.
+    ///
+    /// - Parameters:
+    ///   - message: The `MessageType` that will be displayed by this cell.
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// The default value `UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)`
+
+    func errorPadding(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIEdgeInsets
+
+    /// Specifies the vertical position of Error Label in a `MessageCollectionViewCell`.
+    ///
+    /// - Parameters:
+    ///   - message: The `MessageType` that will be displayed by this cell.
+    ///   - indexPath: The `IndexPath` of the cell.
+    ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+    ///
+    /// The default value returned by this method is messageCenter.
+    func errorPosition(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> AvatarPosition.Horizontal
     
     /// Specifies the vertical and horizontal alignment for the `AvatarView` in a `MessageCollectionViewCell`.
     ///
@@ -198,6 +219,15 @@ public extension MessagesLayoutDelegate {
         } else {
             return UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)
         }
+    }
+
+    func errorPadding(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+
+    func errorPosition(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> AvatarPosition.Horizontal {
+        guard let dataSource = messagesCollectionView.messagesDataSource else { return .cellLeading }
+        return dataSource.isFromCurrentSender(message: message) ? .cellLeading : .cellTrailing
     }
 
     func cellTopLabelAlignment(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> LabelAlignment {

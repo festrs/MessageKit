@@ -238,6 +238,8 @@ fileprivate extension MessagesCollectionViewFlowLayout {
         attributes.avatarSize = avatarSize(for: attributes)
         attributes.messageContainerPadding = messageContainerPadding(for: attributes)
         attributes.messageLabelInsets = messageLabelInsets(for: attributes)
+        attributes.errorInsets = errorPadding(for: attributes)
+        attributes.errorAlignment = errorPosition(for: attributes)
         
         // MessageContainerView
         attributes.messageContainerMaxWidth = messageContainerMaxWidth(for: attributes)
@@ -634,4 +636,38 @@ private extension MessagesCollectionViewFlowLayout {
         return cellHeight
     }
     
+}
+
+// MARK: - Error Sizing
+
+private extension MessagesCollectionViewFlowLayout {
+
+    // Q
+
+    /// Returns the padding to be used on the Error Label in the `MessageContainerView` for a given `MessageType`.
+    ///
+    /// - Parameters:
+    ///   - attributes: The `MessageIntermediateLayoutAttributes` containing the `MessageType` object.
+    func errorPadding(for attributes: MessageIntermediateLayoutAttributes) -> UIEdgeInsets {
+        return messagesLayoutDelegate.errorPadding(for: attributes.message, at: attributes.indexPath, in: messagesCollectionView)
+    }
+
+    // R
+
+    /// Returns the Error `AvatarPosition.horizontal` for a given `MessageType`.
+    ///
+    /// - Parameters:
+    ///   - attributes: The `MessageIntermediateLayoutAttributes` containing the `MessageType` object.
+    func errorPosition(for attributes: MessageIntermediateLayoutAttributes) -> AvatarPosition.Horizontal {
+        var position = messagesLayoutDelegate.errorPosition(for: attributes.message, at: attributes.indexPath, in: messagesCollectionView)
+
+        switch position {
+        case .cellTrailing, .cellLeading:
+            break
+        case .natural:
+            position = messagesDataSource.isFromCurrentSender(message: attributes.message) ? .cellTrailing : .cellLeading
+        }
+
+        return position
+    }
 }

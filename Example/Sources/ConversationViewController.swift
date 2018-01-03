@@ -352,6 +352,18 @@ extension ConversationViewController: MessagesDisplayDelegate {
 
 extension ConversationViewController: MessagesLayoutDelegate {
 
+    func errorPadding(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIEdgeInsets {
+        if isFromCurrentSender(message: message) {
+            return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        } else {
+            return UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        }
+    }
+
+    func errorPosition(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> AvatarPosition.Horizontal {
+        return AvatarPosition.Horizontal.natural
+    }
+
     func avatarPosition(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> AvatarPosition {
         return AvatarPosition(horizontal: .natural, vertical: .messageBottom)
     }
