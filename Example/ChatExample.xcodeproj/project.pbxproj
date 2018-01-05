@@ -267,11 +267,7 @@
 				TargetAttributes = {
 					882B5E321CF7D4B900B6E160 = {
 						CreatedOnToolsVersion = 7.3.1;
-<<<<<<< HEAD
 						DevelopmentTeam = W8HGNN6BCG;
-=======
-						DevelopmentTeam = T26M4385KK;
->>>>>>> upstream/master
 						LastSwiftMigration = 0800;
 					};
 					882B5E481CF7D4B900B6E160 = {

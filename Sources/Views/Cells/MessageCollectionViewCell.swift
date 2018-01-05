@@ -130,6 +130,9 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
     func setupGestureRecognizers() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
         contentView.addGestureRecognizer(tapGesture)
+
+        let longTapGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongTapGesture(_:)))
+        contentView.addGestureRecognizer(longTapGesture)
     }
 
     /// Handle tap gesture on contentView and its subviews like messageContainerView, cellTopLabel, cellBottomLabel, avatarView ....
@@ -148,6 +151,21 @@ open class MessageCollectionViewCell: UICollectionViewCell, CollectionViewReusab
             delegate?.didTapTopLabel(in: self)
         case cellBottomLabel.frame.contains(touchLocation):
             delegate?.didTapBottomLabel(in: self)
+        default:
+            break
+        }
+    }
+
+    /// Handle long tap gesture on contentView and its subviews like messageContainerView, cellTopLabel, cellBottomLabel, avatarView ....
+    @objc
+    open func handleLongTapGesture(_ gesture: UIGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+
+        let touchLocation = gesture.location(in: self)
+
+        switch true {
+        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
+            delegate?.didLongTapMessage(in: self)
         default:
             break
         }
